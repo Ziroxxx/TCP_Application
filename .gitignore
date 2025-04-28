@@ -1,0 +1,9 @@
+frontendEarth/node_modules/
+frontendEarth/package-lock.json
+backendEarth/node_modules/
+backendEarth/package-lock.json
+
+frontend_mars/node_modules/
+frontend_mars/package-lock.json
+backendMars/node_modules
+backendMars/package-lock.json

@@ -1,0 +1,64 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .login--card {
+    width: 50%;
+    border-radius: 10px;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: 20vh;
+    gap: 3em;
+    z-index: 3;
+  }
+
+  .login--back {
+    width: 100%;
+}
+
+.login--back svg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+
+.img1 {
+    position: absolute;
+    left: 13.5%;
+    width: 14.4%;
+    object-fit: contain;
+  }
+  
+  .img2 {
+    position: absolute;
+    left: 84.3%;
+    width: 12.9%;
+    object-fit: contain;
+  }
+
+  .login--topic{
+    top: 0;
+    width: auto;
+    height: auto;
+    z-index: 2;
+  }
+
+  .login--topic--text{
+    font-family: "Inter Tight", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3vw;
+    font: small;
+    color: white;
+  }
