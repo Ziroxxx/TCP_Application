@@ -4,15 +4,9 @@ import http from 'http'
 import ws, {type WebSocket} from 'ws'
 
 const port: number = 8010; // порт на котором будет развернут этот (вебсокет) сервер
-<<<<<<< Updated upstream
-const hostname = '192.168.1.10'; // адрес вебсокет сервера
-const transportLevelPort = 5000; // порт сервера транспортного уровня
-const transportLevelHostname = '192.168.1.10'; // адрес сервера транспортного уровня
-=======
 const hostname = '192.168.56.1'; // адрес вебсокет сервера
-const transportLevelPort = 8002; // порт сервера транспортного уровня
+const transportLevelPort = 5000; // порт сервера транспортного уровня
 const transportLevelHostname = '192.168.56.1'; // адрес сервера транспортного уровня
->>>>>>> Stashed changes
 
 interface Message {
     id?: number
