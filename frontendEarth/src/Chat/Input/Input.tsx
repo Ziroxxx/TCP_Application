@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useUser} from "../../hooks/useUser";
 import {Message} from "../../consts";
 import {Button, TextField} from "@mui/material";
@@ -14,29 +14,63 @@ type InputProps = {
 export const Input: React.FC<InputProps> = ({ws, setMessageArray, MessageArray}) => {
   const {login} = useUser();
   const [message, setMessage] = useState<Message>({data: ''});
+  const [bigMessageArray, setBigMessageArray] = useState<Message[]>([]);
+
+  useEffect(() => {
+    console.log("Updated bigMessageArray:", bigMessageArray);
+  }, [bigMessageArray]);
+  
+
+  const constructMessage = (MessageText: string, partIndex?: number) => {
+    return {
+      id: partIndex ? Date.now() + partIndex : Date.now(),
+      data: MessageText,
+      username: login,
+      send_time: String(new Date())
+    }
+  }
 
   const handleChangeMessage = (event: any) => {
-    const newMsg: Message = {
-      id: Date.now(),
-      data: event.target.value,
-      username: login,
-      send_time: String(new Date()),
-    };
-    setMessage(newMsg);
+    let msg_text = event.target.value;
+    setBigMessageArray([]);
+    if(msg_text.length <= 500){
+      const newMsg: Message = constructMessage(msg_text);
+      setMessage(newMsg);
+    }
+    else {
+      let lenBigMessage = msg_text.length;
+      let countOfMessages = Math.ceil(lenBigMessage / 500);
+      console.log(countOfMessages);
+      let begin = 0;
+      let end = 500;
+      let tempArray: Message[] = [];
+      for (let i = 0; i < countOfMessages; i++) {
+        let msgPartText = msg_text.slice(begin, end);
+        begin += 500;
+        end += 500;
+        const msgPartData = constructMessage(msgPartText, i);
+        tempArray.push(msgPartData);
+      }
+      setBigMessageArray(tempArray);
+      const displayText = constructMessage(msg_text);
+      setMessage(displayText)
+    }
   };
 
   const handleClickSendMessBtn = () => {
-    if (login && ws && message.data !== '') {
-      // const wrappedMessage = {
-      //   type: 'message',         
-      //   payload: message
-      // };
+    if (message.data && login && ws && message.data !== '' && message.data.length <= 500) {
       const msgJSON = JSON.stringify(message);
       ws.send(msgJSON);
-
-      setMessage({data: ''})
       setMessageArray((currentMsgArray: any) => [...currentMsgArray, message]);
     }
+    else if (message.data && login && ws && message.data !== ''){
+      for(let i = 0; i < bigMessageArray.length; i++){
+        const msgJSON = JSON.stringify(bigMessageArray[i]);
+        ws.send(msgJSON);
+      }
+      setMessageArray((currentMsgArray: any) => [...currentMsgArray, ...bigMessageArray]);
+    }
+    setMessage({data: ''})
   };
   return (
     <>

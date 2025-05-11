@@ -14,30 +14,44 @@ export const Login: React.FC<LoginProps> = ({ws, setWs, createWebSocket}) => {
     const [svgHeight, setSvgHeight] = useState(0);
     const {login, setUser} = useUser();
     const [userName, setUsername] = useState(login);
+    const [validError, setValidError] = useState("");
+    const [isError, setError] = useState(false);
 
     const handleChangeLogin = (event: any) => {
+        setError(false);
+        setValidError("");
         setUsername(event.target.value);
       };
 
     // при авторизации регистрируем новое вебсокет соединеие
     const handleClickSignInBtn = () => {
-        setUser({
-        userInfo: {
-            Data: {
-            login: userName,
-            },
-        },
-        });
-        if (ws) {
-        ws.close(1000, 'User enter userName');
-        } else {
-        console.log('ws.close(1000, User enter userName); dont work');
+        if(userName.length <= 20 && userName.length > 0){
+            setUser({
+                userInfo: {
+                    Data: {
+                    login: userName,
+                    },
+                },
+                });
+                if (ws) {
+                ws.close(1000, 'User enter userName');
+                } else {
+                console.log('ws.close(1000, User enter userName); dont work');
+                }
+                setWs(
+                createWebSocket(
+                    `ws://${hostname}:${port}/?username=${encodeURIComponent(userName)}`,
+                ),
+                );
         }
-        setWs(
-        createWebSocket(
-            `ws://${hostname}:${port}/?username=${encodeURIComponent(userName)}`,
-        ),
-        );
+        else if(userName.length == 0){
+            setError(true);
+            setValidError("Обязательное поле!");
+        }
+        else{
+            setError(true);
+            setValidError("Имя пользователя не должно превышать 20 символов!");
+        }
     };
     
     useEffect(() => {
@@ -96,7 +110,9 @@ export const Login: React.FC<LoginProps> = ({ws, setWs, createWebSocket}) => {
                           },
                           width: "100%"
                     }}
+                    helperText={validError}
                     onChange={handleChangeLogin}
+                    error={isError}
                     />
                 </Box>
                 <Button variant="outlined" sx={{backgroundColor: 'white',
