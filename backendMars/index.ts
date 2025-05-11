@@ -4,7 +4,7 @@ import http from 'http'
 import ws, {type WebSocket} from 'ws'
 
 const port: number = 8020; // порт на котором будет развернут этот (вебсокет) сервер
-const hostname = '192.168.56.1'; // адрес вебсокет сервера
+const hostname = '0.0.0.0'; // адрес вебсокет сервера
 
 interface Message {
     id?: number

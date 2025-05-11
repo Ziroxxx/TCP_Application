@@ -1,4 +1,4 @@
-export const hostname = '192.168.56.1';
+export const hostname = '10.147.18.159';
 export const port = '8020'
 
 export type Message = {
