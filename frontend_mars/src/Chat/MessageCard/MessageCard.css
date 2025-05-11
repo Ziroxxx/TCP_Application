@@ -16,7 +16,7 @@
     padding: 1em;
     display: flex;
     flex-direction: column;
-    border-radius: 0.5em;
+    border-radius: 1em;
   }
   
   .msg--own--reverse {

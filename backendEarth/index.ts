@@ -5,8 +5,8 @@ import ws, {type WebSocket} from 'ws'
 
 const port: number = 8010; // порт на котором будет развернут этот (вебсокет) сервер
 const hostname = '192.168.1.10'; // адрес вебсокет сервера
-const transportLevelPort = 8002; // порт сервера транспортного уровня
-const transportLevelHostname = '192.168.12.172'; // адрес сервера транспортного уровня
+const transportLevelPort = 5000; // порт сервера транспортного уровня
+const transportLevelHostname = '192.168.1.10'; // адрес сервера транспортного уровня
 
 interface Message {
     id?: number
@@ -134,6 +134,7 @@ wss.on('connection', (websocketConnection: WebSocket, req: Request) => {
       console.log('[message] recived from ' + username + ': ' + messageString)
       const message: Message = JSON.parse(messageString)
       message.username = message.username ?? username
+      void sendMessageToOtherUsers(message.username, message)
       void sendMsgToTransportLevel(message)
     })
 
