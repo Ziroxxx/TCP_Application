@@ -5,6 +5,8 @@ import {Button, TextField} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import "./Input.css"
 
+const MAX_SIZE = 150;
+
 type InputProps = {
   ws: any,
   MessageArray: any,
@@ -33,21 +35,21 @@ export const Input: React.FC<InputProps> = ({ws, setMessageArray, MessageArray})
   const handleChangeMessage = (event: any) => {
     let msg_text = event.target.value;
     setBigMessageArray([]);
-    if(msg_text.length <= 500){
+    if(msg_text.length <= MAX_SIZE){
       const newMsg: Message = constructMessage(msg_text);
       setMessage(newMsg);
     }
     else {
       let lenBigMessage = msg_text.length;
-      let countOfMessages = Math.ceil(lenBigMessage / 500);
+      let countOfMessages = Math.ceil(lenBigMessage / MAX_SIZE);
       console.log(countOfMessages);
       let begin = 0;
-      let end = 500;
+      let end = MAX_SIZE;
       let tempArray: Message[] = [];
       for (let i = 0; i < countOfMessages; i++) {
         let msgPartText = msg_text.slice(begin, end);
-        begin += 500;
-        end += 500;
+        begin += MAX_SIZE;
+        end += MAX_SIZE;
         const msgPartData = constructMessage(msgPartText, i);
         tempArray.push(msgPartData);
       }
@@ -58,7 +60,7 @@ export const Input: React.FC<InputProps> = ({ws, setMessageArray, MessageArray})
   };
 
   const handleClickSendMessBtn = () => {
-    if (message.data && login && ws && message.data !== '' && message.data.length <= 500) {
+    if (message.data && login && ws && message.data !== '' && message.data.length <= MAX_SIZE) {
       const msgJSON = JSON.stringify(message);
       ws.send(msgJSON);
       setMessageArray((currentMsgArray: any) => [...currentMsgArray, message]);
